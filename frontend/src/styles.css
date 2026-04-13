@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+/* RESET */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Angular root fix */
+app-root {
+  display: block;
+  height: 100%;
+}
+
+/* Angular Material override (if used) */
+body.mat-typography {
+  margin: 0 !important;
+}/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Inter', sans-serif;
+}

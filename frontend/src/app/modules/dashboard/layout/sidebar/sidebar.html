@@ -1,0 +1,44 @@
+<div class="sidebar">
+
+  <div class="logo-area">
+    <div class="logo-row">
+      <div class="logo-icon">💬</div>
+      <div>
+        <div class="logo-text">SupportHub</div>
+        <div class="logo-badge">PRO WORKSPACE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Main</div>
+
+ <a routerLink="/dashboard/overview" routerLinkActive="active" class="nav-item">
+  <span class="nav-icon">▦</span>
+  <p>Overview</p>
+</a>
+
+ <a routerLink="/dashboard/tickets" routerLinkActive="active" class="nav-item">
+  <span class="nav-icon">🎫</span>
+  <p>Tickets</p>
+</a>
+
+    <div class="nav-label" style="margin-top: 20px;">Settings</div>
+
+  
+<a routerLink="/dashboard/webhooks" routerLinkActive="active" class="nav-item">
+  <span class="nav-icon">🔗</span>
+  <p>Webhooks</p>
+</a>
+
+  </div>
+
+  <div class="user-card">
+    <div class="avatar">{{ getInitial() }}</div>
+    <div class="user-info">
+      <div class="name">{{ user?.name || 'User' }}</div>
+      <div class="email">{{ user?.email || 'email@example.com' }}</div>
+    </div>
+  </div>
+
+</div>

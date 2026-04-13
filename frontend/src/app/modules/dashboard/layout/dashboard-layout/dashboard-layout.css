@@ -1,0 +1,27 @@
+
+.layout {
+  display: flex;
+}
+
+
+.main {
+  margin-left: 270px;            
+  width: calc(100% - 270px);     
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+  background: #f5f7fb;
+}
