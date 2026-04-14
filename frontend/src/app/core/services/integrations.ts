@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+
+
 
 @Injectable({ providedIn: 'root' })
 export class IntegrationService {
 
-  api = 'http://localhost:5000/api/integrations';
-
+api = environment.apiUrl + '/integrations';
   constructor(private http: HttpClient) {}
 
   connectFreshdesk(data: any) {
@@ -19,7 +21,7 @@ export class IntegrationService {
   disconnectFreshdesk(userId: string) {
     return this.http.delete(`${this.api}/freshdesk/${userId}`);
   }
-
+  
   getTickets(userId: string) {
   return this.http.get(`${this.api}/tickets/${userId}`);
 }
@@ -33,8 +35,6 @@ connectHubspot(userId: string) {
   return `${this.api}/hubspot/connect?userId=${userId}`;
 }
 
-
-
 getRequester(userId: string, requesterId: number) {
   return this.http.get(
     `${this.api}/requester/${userId}/${requesterId}`
@@ -46,7 +46,6 @@ getHubspotContact(userId: string, email: string) {
   );
 }
 getWebhookLogs() {
-  return this.http.get<any>('http://localhost:5000/api/webhook/logs');
+  return this.http.get<any>(`${environment.apiUrl}/webhook/logs`);
 }
-
 }

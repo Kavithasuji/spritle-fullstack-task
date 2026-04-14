@@ -84,7 +84,7 @@ https://<ngrok-url>/api/webhook/freshdesk
 
 ```
 Email: sujithakavi20@gmail.com
-Password: sujii2001
+Password: @Sujii2001
 ```
 
 ---
