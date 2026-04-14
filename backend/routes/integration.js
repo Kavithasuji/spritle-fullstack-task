@@ -3,9 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const axios = require('axios');
 
-/* =========================
-   SCHEMA
-========================= */
+
 const integrationSchema = new mongoose.Schema(
   {
     userId: {
@@ -29,9 +27,7 @@ const integrationSchema = new mongoose.Schema(
 
 const Integration = mongoose.model('Integration', integrationSchema);
 
-/* =========================
-   CONNECT FRESHDESK
-========================= */
+
 router.post('/freshdesk', async (req, res) => {
   try {
     const { domain, apiKey, userId } = req.body;
@@ -40,13 +36,11 @@ router.post('/freshdesk', async (req, res) => {
       return res.status(400).json({ message: 'Missing fields' });
     }
 
-    // ✅ CLEAN DOMAIN BEFORE SAVE
     const cleanDomain = domain
       .replace(/^https?:\/\//, '')
       .replace(/\/+$/, '')
       .trim();
 
-    // ✅ CLEAN API KEY (IMPORTANT)
     const cleanApiKey = apiKey.trim();
 
     const updated = await Integration.findOneAndUpdate(
@@ -77,9 +71,7 @@ router.post('/freshdesk', async (req, res) => {
   }
 });
 
-/* =========================
-   GET INTEGRATION
-========================= */
+
 router.get('/:userId', async (req, res) => {
   try {
     const integration = await Integration.findOne({
@@ -92,9 +84,7 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-/* =========================
-   GET TICKETS (FIXED)
-========================= */
+
 router.get('/tickets/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -112,7 +102,6 @@ router.get('/tickets/:userId', async (req, res) => {
 
     let { domain, apiKey } = integration.freshdesk;
 
-    // ✅ EXTRA SAFETY CLEAN
     domain = domain
       .replace(/^https?:\/\//, '')
       .replace(/\/+$/, '')
@@ -122,10 +111,7 @@ router.get('/tickets/:userId', async (req, res) => {
 
     const finalUrl = `https://${domain}/api/v2/tickets`;
 
-    console.log("🚀 URL:", finalUrl);
-    console.log("🔑 API KEY LENGTH:", apiKey.length);
 
-    // ✅ IMPORTANT FIX: use axios auth (NOT manual header)
     const response = await axios.get(finalUrl, {
       auth: {
         username: apiKey,
@@ -139,7 +125,7 @@ router.get('/tickets/:userId', async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ ERROR:", error.response?.data || error.message);
+    console.error(" ERROR:", error.response?.data || error.message);
 
     return res.status(500).json({
       success: false,
@@ -149,9 +135,6 @@ router.get('/tickets/:userId', async (req, res) => {
   }
 });
 
-/* =========================
-   DISCONNECT FRESHDESK
-========================= */
 router.delete('/freshdesk/:userId', async (req, res) => {
   try {
     await Integration.findOneAndUpdate(
@@ -165,9 +148,7 @@ router.delete('/freshdesk/:userId', async (req, res) => {
   }
 });
 
-/* =========================
-   CONNECT HUBSPOT
-========================= */
+
 router.post('/hubspot', async (req, res) => {
   try {
     const { accessToken, refreshToken, expiresAt, userId } = req.body;
@@ -195,9 +176,7 @@ router.post('/hubspot', async (req, res) => {
   }
 });
 
-/* =========================
-   DISCONNECT HUBSPOT
-========================= */
+
 router.delete('/hubspot/:userId', async (req, res) => {
   try {
     await Integration.findOneAndUpdate(
@@ -227,7 +206,6 @@ router.get('/conversations/:userId/:ticketId', async (req, res) => {
 
     let { domain, apiKey } = integration.freshdesk;
 
-    // ✅ clean domain
     domain = domain
       .replace(/^https?:\/\//, '')
       .replace(/\/+$/, '');
@@ -248,7 +226,7 @@ router.get('/conversations/:userId/:ticketId', async (req, res) => {
     });
 
   } catch (err) {
-    console.error("❌ Conversation error:", err.response?.data || err.message);
+    console.error("Conversation error:", err.response?.data || err.message);
 
     res.status(500).json({
       success: false,
@@ -266,22 +244,14 @@ router.get('/hubspot/connect', (req, res) => {
     `&scope=crm.objects.contacts.read` +
     `&state=${userId}`;
 
-  console.log("✅ CLEAN URL:", url);
 
   res.redirect(url);
 });
 
 router.get('/hubspot/callback', async (req, res) => {
   try {
-    console.log("🔥 CALLBACK HIT");
-
     const { code, state } = req.query;
-
     const userId = state;
-
-    console.log("CODE:", code);
-    console.log("USER:", userId);
-
     if (!code) {
       return res.status(400).send("No code received");
     }
@@ -303,9 +273,7 @@ router.get('/hubspot/callback', async (req, res) => {
 
     const { access_token, refresh_token, expires_in } = tokenRes.data;
 
-    console.log("✅ TOKEN:", access_token);
 
-    // ✅ SAVE IN DB
     await Integration.findOneAndUpdate(
       { userId },
       {
@@ -320,12 +288,11 @@ router.get('/hubspot/callback', async (req, res) => {
       { new: true, upsert: true }
     );
 
-    console.log("💾 HubSpot saved");
 
     res.redirect('http://localhost:4200/dashboard/integrations');
 
   } catch (error) {
-    console.error("❌ CALLBACK ERROR:", error.response?.data || error.message);
+    console.error(" CALLBACK ERROR:", error.response?.data || error.message);
     res.send("HubSpot connection failed");
   }
 });
@@ -379,9 +346,7 @@ router.get('/hubspot/contact/:userId', async (req, res) => {
 
     const token = integration.hubspot.accessToken;
 
-    console.log("📧 Searching HubSpot for:", email);
 
-    // 🔥 HUBSPOT SEARCH API
     const response = await axios.post(
       'https://api.hubapi.com/crm/v3/objects/contacts/search',
       {
@@ -415,9 +380,7 @@ router.get('/hubspot/contact/:userId', async (req, res) => {
 
     const results = response.data.results || [];
 
-    console.log("🔍 HubSpot Results:", results.length);
 
-    // ❌ NOT FOUND CASE
     if (results.length === 0) {
       return res.json({
         success: true,
@@ -426,14 +389,13 @@ router.get('/hubspot/contact/:userId', async (req, res) => {
       });
     }
 
-    // ✅ SUCCESS
     res.json({
       success: true,
       data: results[0]
     });
 
   } catch (error) {
-    console.error("❌ HUBSPOT ERROR:");
+    console.error("HUBSPOT ERROR:");
     console.error(error.response?.data || error.message);
 
     res.status(500).json({

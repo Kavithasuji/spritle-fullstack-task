@@ -1,16 +1,12 @@
 const express = require('express');
 const router = express.Router();
-// const WebhookLog = require('../models/webhook.model');
 const WebhookLog = require('../models/webhookLog.model');
 
-/* =========================
-   RECEIVE WEBHOOK
-========================= */
+
 router.post('/freshdesk', async (req, res) => {
   try {
     const ticketId = req.body?.ticket_id;
 
-    // check duplicate
     const exists = await WebhookLog.findOne({
       'payload.ticket_id': ticketId
     });
@@ -28,9 +24,7 @@ router.post('/freshdesk', async (req, res) => {
   }
 });
 
-/* =========================
-   GET LOGS
-========================= */
+
 router.get('/logs', async (req, res) => {
   try {
     const logs = await WebhookLog.find().sort({ createdAt: -1 });
