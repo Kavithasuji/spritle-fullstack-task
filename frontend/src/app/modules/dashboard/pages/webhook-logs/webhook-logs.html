@@ -1,1 +1,35 @@
-<p>webhook-logs works!</p>
+<div class="page">
+
+  <h2>Webhook Logs</h2>
+
+  <div *ngIf="loading">Loading logs...</div>
+
+  <div *ngIf="!loading && logs.length === 0">
+    No webhook logs yet
+  </div>
+
+  <table *ngIf="!loading && logs.length > 0" class="table">
+
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Event</th>
+        <th>Ticket ID</th>
+        <th>Subject</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let log of logs">
+        <td>{{ log.createdAt | date:'short' }}</td>
+        <td>{{ log.type }}</td>
+        <td>{{ log.payload?.ticket_id }}</td>
+        <td>{{ log.payload?.subject }}</td>
+        <td>{{ log.payload?.email }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>

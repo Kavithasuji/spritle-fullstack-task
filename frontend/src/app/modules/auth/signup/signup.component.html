@@ -6,8 +6,8 @@
       <h2 class="logo">SupportHub</h2>
     </div>
 
-    <h3 class="title">Create account</h3>
-    <p class="subtitle">Get started with your workspace</p>
+    <h4 class="title"> Create account</h4>
+    <p class="subtitle">Every ticket tells a story — every customer deserves a connection</p>
 
     <div [hidden]="showOTP">
 
@@ -16,15 +16,16 @@
 
       <label>Email address</label>
       <input type="email" [(ngModel)]="user.email" (input)="onEmailChange()" placeholder="you@company.com" />
+      <p class="error" *ngIf="user.email && !isValidEmail(user.email)">
+        Invalid email address
+      </p>
 
       <p *ngIf="emailExists" class="error">
         User already exists.
         <a routerLink="/login">Log In</a>
       </p>
 
-      <button
-        type="button"
-        [disabled]="!user.name || !user.email || emailExists"
+      <button type="button" [disabled]="!user.name || !user.email || !isValidEmail(user.email) || emailExists"
         (click)="signup()">
         Send OTP →
       </button>
@@ -45,10 +46,7 @@
         <input maxlength="1" [(ngModel)]="otp[5]">
       </div>
 
-      <button 
-        type="button" 
-        [disabled]="isVerifying"
-        (click)="verify()">
+      <button type="button" [disabled]="isVerifying" (click)="verify()">
         {{ isVerifying ? 'Verifying...' : 'Verify OTP' }}
       </button>
 

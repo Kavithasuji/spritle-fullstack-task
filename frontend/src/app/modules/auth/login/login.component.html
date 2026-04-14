@@ -7,8 +7,15 @@
     </div>
     <p class="subtitle">Better support-> Smarter relationships -> Connect Freshdesk & HubSpot</p>
     <label>Email</label>
-    <input type="email" [(ngModel)]="user.email" placeholder="Enter your email" />
-    <label>Password</label>
+<input 
+  type="email"
+  [(ngModel)]="user.email"
+  placeholder="Enter your email"
+/>
+
+<p class="error" *ngIf="user.email && !isValidEmail(user.email)">
+  Invalid email format
+</p>    <label>Password</label>
     <div class="password-field">
       <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" (keyup.enter)="login()"
         placeholder="Enter your password" />
@@ -18,9 +25,12 @@
       </span>
     </div>
     <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
-    <button type="button" [disabled]="!user.email || !user.password || isLoading" (click)="login()">
-      Login
-    </button>
+   <button 
+  type="button"
+  [disabled]="!user.email || !user.password || !isValidEmail(user.email) || isLoading"
+  (click)="login()">
+  Login
+</button>
     <p class="footer">
       Don’t have an account?
       <a routerLink="/signup">Sign up here</a>

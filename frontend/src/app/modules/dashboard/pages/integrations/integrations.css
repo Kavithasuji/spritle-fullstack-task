@@ -1,0 +1,219 @@
+.container {
+  padding: 20px;
+  background: #f5f6f8;
+  height: 100vh;
+}
+
+/* TITLE SMALLER */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* CARDS LAYOUT */
+.cards {
+  display: flex;
+  gap: 20px;
+}
+
+/* CARD SIZE REDUCED */
+.card {
+  width: 320px; /* reduced from 420 */
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ICON SMALLER */
+.icon {
+  font-size: 22px;
+}
+
+/* TEXT SMALLER */
+h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+p {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+/* STATUS BOX SMALLER */
+.status-box {
+  background: #eef3ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 13px;
+}
+
+/* STATUS COLORS */
+.connected {
+  color: #2b5cff;
+  font-weight: 600;
+}
+
+.disconnected {
+  color: #999;
+}
+
+/* BUTTONS SMALLER */
+.connect-btn {
+  width: 100%;
+  background: #5c7cfa;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.disconnect-btn {
+  width: 100%;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* MODAL SMALLER */
+.modal {
+  width: 320px;
+  background: #fff;
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.modal h2 {
+  font-size: 18px;
+}
+
+.modal input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* MODAL BUTTONS */
+.update-btn {
+  background: #5c7cfa;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.cancel-btn {
+  background: #ccc;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.modal-overlay {
+  position: fixed; /* VERY IMPORTANT */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999; /* ensures it stays on top */
+}.modal {
+  width: 420px;          /* increased from 320 */
+  max-width: 90%;
+  background: #fff;
+  padding: 28px;         /* more inner spacing */
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Title bigger */
+.modal h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* Labels */
+.modal label {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Inputs bigger */
+.modal input {
+  width: 90%;
+  padding: 12px;         /* increased */
+  margin: 8px 0 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Buttons spacing */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Buttons bigger */
+.update-btn {
+  background: #5c7cfa;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.cancel-btn {
+  background: #ccc;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+}.status-box {
+  margin: 10px 0;
+}
+
+.connected {
+  color: green;
+  font-weight: 600;
+}
+
+.disconnected {
+  color: red;
+  font-weight: 600;
+}

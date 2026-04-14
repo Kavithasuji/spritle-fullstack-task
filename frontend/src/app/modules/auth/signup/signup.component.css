@@ -56,15 +56,20 @@ html, body {
   font-size: 24px;
   font-weight: 700;
   margin-top: 10px;
+  margin-bottom: 5px;
   color: #1e293b;
+  text-align: center;
 }
-
 .subtitle {
   font-size: 15px;
   color: #64748b;
   margin-bottom: 25px;
+  text-align: center;
+  line-height: 1.5;
 }
-
+.logo-wrapper {
+  flex-direction: column;
+}
 label {
   display: block;
   text-align: left;
@@ -164,4 +169,38 @@ button:not(:disabled) {
 
 [hidden] {
   display: none !important;
+}.logo,
+.title,
+.subtitle {
+  text-align: center;
+}.auth-card {
+  padding: 25px 25px;   
+}
+
+.title {
+  margin-top: 5px;     
+  margin-bottom: 2px;  
+  font-size: 22px;      
+}
+
+.subtitle {
+  margin-bottom: 15px;  
+  font-size: 14px;
+}
+
+.logo-wrapper {
+  margin-bottom: 8px;   
+}
+
+label {
+  margin-top: 12px;    
+}
+
+input {
+  height: 45px;        
+}
+
+button {
+  height: 45px;       
+  margin-top: 15px;  
 }

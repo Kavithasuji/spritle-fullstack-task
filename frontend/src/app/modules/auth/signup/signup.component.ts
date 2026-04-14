@@ -27,6 +27,11 @@ export class SignupComponent {
 
   onEmailChange() {
     if (!this.user.email) return;
+     if (!this.isValidEmail(this.user.email)) {
+    this.emailExists = false;
+    return;
+  }
+
 
     this.auth.checkEmail(this.user.email).subscribe({
       next: (res: any) => {
@@ -37,8 +42,17 @@ export class SignupComponent {
       }
     });
   }
+  isValidEmail(email: string): boolean {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
 
   signup() {
+
+      if (!this.isValidEmail(this.user.email)) {
+    alert('Invalid email address');
+    return;
+  }
     if (this.emailExists) return;
 
     this.showOTP = true;

@@ -1,26 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [RouterModule],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css',
+  styleUrls: ['./sidebar.css'], 
 })
 export class Sidebar implements OnInit {
 
   user: any = {};
 
-  ngOnInit() {
-    const data = localStorage.getItem('user');
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-    if (data) {
-      this.user = JSON.parse(data);
+  ngOnInit() {
+
+    if (isPlatformBrowser(this.platformId)) {
+      const data = localStorage.getItem('user');
+
+      if (data) {
+        this.user = JSON.parse(data);
+      }
     }
   }
 
   getInitial() {
-    return this.user?.name ? this.user.name.charAt(0).toUpperCase() : 'U';
+    return this.user?.name
+      ? this.user.name.charAt(0).toUpperCase()
+      : 'U';
   }
 }

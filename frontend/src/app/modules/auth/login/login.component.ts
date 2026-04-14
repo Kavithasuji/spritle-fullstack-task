@@ -21,9 +21,14 @@ export class LoginComponent {
   showPassword = false;
 
   constructor(private auth: AuthService, private router: Router) {}
+  ngOnInit() {}
 
   login() {
     this.isLoading = true;
+      if (!this.isValidEmail(this.user.email)) {
+    this.errorMsg = 'Invalid email address';
+    return;
+  }
 
     this.auth.login(this.user).subscribe({
       next: (res: any) => {
@@ -75,4 +80,8 @@ export class LoginComponent {
   goToForgot() {
     this.router.navigate(['/forgotpassword']);
   }
+  isValidEmail(email: string): boolean {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
 }

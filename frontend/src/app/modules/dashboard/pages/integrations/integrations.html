@@ -1,0 +1,144 @@
+<div class="container">
+  <!-- <h4 class="title">Integrations</h4> -->
+
+  <div class="cards">
+
+    <!-- Freshdesk Card -->
+    <div class="card">
+      <div class="header">
+        <span class="icon">🔧</span>
+        <div>
+          <h2>Freshdesk</h2>
+          <p>Ticket Management & Support</p>
+        </div>
+      </div>
+
+      <div class="status-box">
+        <p *ngIf="isFreshdeskConnected" class="connected">
+          Status: Connected ✔
+        </p>
+
+        <p *ngIf="!isFreshdeskConnected" class="disconnected">
+          Status: Not Connected
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <button
+        *ngIf="!isFreshdeskConnected"
+        class="connect-btn"
+        (click)="openFreshdeskModal()"
+      >
+        Connect
+      </button>
+
+      <button
+        *ngIf="isFreshdeskConnected"
+        class="disconnect-btn"
+        (click)="disconnectFreshdesk()"
+      >
+        Disconnect
+      </button>
+    </div>
+
+
+
+  <!-- HUBSPOT CARD -->
+<div class="card">
+  <div class="header">
+    <span class="icon">🤝</span>
+    <div>
+      <h2>HubSpot</h2>
+      <p>CRM & Contact Management</p>
+    </div>
+  </div>
+
+  <!-- ✅ STATUS -->
+  <div class="status-box">
+    <p *ngIf="isHubspotConnected" class="connected">
+      Status: Connected ✔
+    </p>
+
+    <p *ngIf="!isHubspotConnected" class="disconnected">
+      Status: Not Connected
+    </p>
+  </div>
+
+  <!-- ✅ BUTTONS -->
+  <button
+    *ngIf="!isHubspotConnected"
+    class="connect-btn"
+    (click)="openHubspotModal()"
+  >
+    Connect
+  </button>
+
+  <button
+    *ngIf="isHubspotConnected"
+    class="disconnect-btn"
+    (click)="disconnectHubspot()"
+  >
+    Disconnect
+  </button>
+</div>
+
+
+<!-- ✅ HUBSPOT MODAL -->
+<div class="modal-overlay" *ngIf="showHubspotModal">
+  <div class="modal">
+    <h2>Connect HubSpot</h2>
+
+    <p>You will be redirected to HubSpot to authorize access.</p>
+
+    <div class="modal-actions">
+      <button class="update-btn" (click)="connectHubspot()">
+        Connect
+      </button>
+
+      <button class="cancel-btn" (click)="closeHubspotModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!-- HubSpot Card (Static Connected like image) -->
+    <!-- <div class="card">
+      <div class="header">
+        <span class="icon">🤝</span>
+        <div>
+          <h2>HubSpot</h2>
+          <p>CRM & Contact Management</p>
+        </div>
+      </div>
+
+      <div class="status-box">
+        <p class="connected">Status: Connected ✔</p>
+        <p>OAuth Token: Active</p>
+        <p>Last Synced: 5 minutes ago</p>
+        <p>Contacts: 156 available</p>
+      </div>
+
+      <button class="disconnect-btn">Disconnect</button>
+    </div> -->
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" *ngIf="showFreshdeskModal">
+  <div class="modal">
+    <h2>Connect Freshdesk</h2>
+
+    <label>Domain Name</label>
+    <input type="text" [(ngModel)]="domain" placeholder="yourdomain.freshdesk.com" />
+
+    <label>API Key</label>
+    <input type="password" [(ngModel)]="apiKey" placeholder="Enter API Key" />
+
+    <div class="modal-actions">
+      <button class="update-btn" (click)="connectFreshdesk()">Update</button>
+      <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

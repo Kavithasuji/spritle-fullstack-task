@@ -1,0 +1,185 @@
+<div class="page" [class.panel-open]="isConversationOpen">
+
+  <div class="header">
+    <div>
+      <h1>Support Tickets</h1>
+      <p>Manage and respond to customer requests</p>
+    </div>
+
+    <select [value]="selectedFilter" #statusFilter (change)="filterTickets(statusFilter.value)">
+      <option value="all">All Status</option>
+      <option value="open">Open</option>
+      <option value="pending">Pending</option>
+      <option value="resolved">Resolved</option>
+      <option value="closed">Closed</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Loading tickets...</p>
+  </div>
+
+  <div *ngIf="!loading && !isConnected" class="empty">
+    <h3>No tickets</h3>
+    <p>Please integrate Freshdesk to view your tickets.</p>
+  </div>
+
+  <div *ngIf="!loading && isConnected && filteredTickets.length === 0" class="empty">
+    <h3>No tickets found</h3>
+    <p>No tickets match the selected filter.</p>
+  </div>
+
+  <div class="layout" *ngIf="!loading && filteredTickets.length > 0">
+
+    <div class="tickets">
+      <div class="card" *ngFor="let t of filteredTickets">
+
+        <div class="card-top">
+          <h3>{{ t.subject }}</h3>
+          <span>#{{ t.id }}</span>
+        </div>
+
+        <p class="desc">{{ t.description_text || 'No description available' }}</p>
+
+        <div class="badges">
+          <span class="status" [ngClass]="getStatusClass(t.status)">
+            {{ getStatusLabel(t.status) }}
+          </span>
+          <span class="priority" [ngClass]="getPriorityClass(t.priority)">
+            {{ getPriorityLabel(t.priority) }}
+          </span>
+        </div>
+
+        <div class="footer">
+          <div class="meta">User • {{ t.created_at | date:'yyyy-MM-dd' }}</div>
+
+          <button class="hubspot-btn" (click)="viewHubspotDetails(t)">
+            View HubSpot
+          </button>
+
+          <button class="view-btn" (click)="toggleConversation(t)">
+            {{ selectedTicket?.id === t.id && isConversationOpen ? 'Hide' : 'View Conversation' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="side-panel" *ngIf="isConversationOpen">
+
+      <div class="panel-header">
+        <div class="panel-title">
+          <h3>{{ selectedTicket?.subject }}</h3>
+          <p>#{{ selectedTicket?.id }}</p>
+        </div>
+        <button class="close-btn" (click)="closeConversation()">Close</button>
+      </div>
+
+      <div *ngIf="convLoading" class="no-chat">Loading conversation...</div>
+
+      <div *ngIf="!convLoading && conversations.length === 0" class="no-chat">
+        No conversations available
+      </div>
+
+      <div class="chat-container" *ngIf="!convLoading && conversations.length > 0">
+        <div *ngFor="let c of conversations">
+
+          <div *ngIf="c.incoming" class="chat left">
+            <div class="bubble">
+              <div class="bubble-body" [innerHTML]="c.body"></div>
+              <span class="time">{{ c.created_at | date:'shortTime' }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="!c.incoming" class="chat right">
+            <div class="bubble">
+              <div class="bubble-body" [innerHTML]="c.body"></div>
+              <span class="time">{{ c.created_at | date:'shortTime' }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="hubspotContact" class="hubspot-box">
+
+  <h4>HubSpot Contact</h4>
+
+  <p><b>Name:</b>
+    {{ hubspotContact.properties.firstname }}
+    {{ hubspotContact.properties.lastname }}
+  </p>
+
+  <p><b>Email:</b>
+    {{ hubspotContact.properties.email }}
+  </p>
+
+  <p><b>Phone:</b>
+    {{ hubspotContact.properties.phone || '-' }}
+  </p>
+
+  <p><b>Lifecycle:</b>
+    {{ hubspotContact.properties.lifecyclestage || '-' }}
+  </p>
+
+</div>
+
+<div class="modal-overlay" *ngIf="showHubspotModal">
+  <div class="modal large">
+
+    <div class="modal-header">
+      <h3>Customer Details</h3>
+      <button (click)="closeHubspotModal()">Close</button>
+    </div>
+
+    <div *ngIf="hubspotLoading" class="loading">
+      Loading details...
+    </div>
+
+    <div *ngIf="!hubspotLoading">
+
+      <div *ngIf="requesterDetails">
+        <h4>Freshdesk Contact</h4>
+        <p><b>Name:</b> {{ requesterDetails.name }}</p>
+        <p><b>Email:</b> {{ requesterDetails.email }}</p>
+        <p><b>Phone:</b> {{ requesterDetails.phone }}</p>
+      </div>
+
+      <div class="section">
+        <h4>HubSpot Details</h4>
+
+        <div *ngIf="hubspotContact; else noHubspot">
+
+          <h4>HubSpot Contact</h4>
+
+          <p><b>Name:</b>
+            {{ hubspotContact.properties.firstname }}
+            {{ hubspotContact.properties.lastname }}
+          </p>
+
+          <p><b>Email:</b> {{ hubspotContact.properties.email }}</p>
+          <p><b>Phone:</b> {{ hubspotContact.properties.phone }}</p>
+          <p><b>Lifecycle:</b> {{ hubspotContact.properties.lifecyclestage }}</p>
+
+        </div>
+
+        <ng-template #noHubspot>
+          <p class="no-chat">HubSpot contact not found</p>
+        </ng-template>
+
+        <div *ngIf="!hubspotContact" class="no-data">
+          HubSpot contact not found
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
